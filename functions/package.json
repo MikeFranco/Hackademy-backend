@@ -12,9 +12,11 @@
     "node": "10"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.6.1",
-    "nodemailer": "^6.4.10"
+    "nodemailer": "^6.4.10",
+    "nodemailer-smtp-transport": "^2.7.4"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"

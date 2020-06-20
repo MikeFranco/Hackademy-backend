@@ -1,81 +1,51 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
+const cors = require('cors')({
+  origin: true
+});
 
 admin.initializeApp();
+let transporter;
 
-/* const createTestAcc = async () => {
-  const testAccount = await nodemailer.createTestAccount();
-  const transporter = nodemailer.createTransport({
+nodemailer.createTestAccount((err, account) => {
+  // create reusable transporter object using the default SMTP transport
+  transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass // generated ethereal password
+      user: account.user, // generated ethereal user
+      pass: account.pass // generated ethereal password
     }
   });
-}; */
 
-const testAccount = new Promise((resolve, reject) => {
-  try {
-    return nodemailer.createTestAccount((error, account) => {
-      return error ? reject(error) : resolve(account);
-    });
-  } catch (error) {
-    console.log('%cAlgo salío mal', 'color: #aa00ff', error);
-    reject(error);
-  }
+  console.log('%c⧭', 'color: #1d5673', account.user);
+  console.log('%c⧭', 'color: #f200e2', account.pass);
 });
 
-const transporter = testAccount
-  .then(response =>
-    nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 465,
-      secure: true,
-      auth: {
-        user: response.user,
-        pass: response.pass
-      }
-    })
-  )
-  .catch(error => console.log('%cError transporter', 'color: #0088cc', error))
+exports.emailMessage = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    // getting dest email by query string
+    const { name, email } = req.body;
 
-/* const transporter = nodemailer.createTestAccount((error, account) => {
-  if (account) {
-    return nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 465,
-      secure: true,
-      auth: {
-        user: account.user,
-        pass: account.pass
-      }
-    });
-  } else console.log('%cError en transporter', 'color: #00bf00', error);
-}); */
-
-exports.sendEmail = functions.firestore
-  .document('prueba/{pruebaId}')
-  .onCreate((snap, context) => {
     const mailOptions = {
-      from: `hola@hackademy.com`,
-      to: 'mfrancop.98@gmail.com',
-      subject: 'contact form message',
-      html: `<h1>Order Confirmation</h1>
-     <p> <b>Email: </b>mfrancop.98@gmail.com</p>`
+      from: 'hola@hackademy.com', // Something like: Jane Doe <janedoe@gmail.com>
+      to: email,
+      subject: "I'M A PICKLE!!!", // email subject
+      html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+              <br />
+              <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
+          ` // email content in HTML
     };
 
-    console.log('%ctransporter', 'color: #ffa640', transporter);
-
-    return transporter.sendMail(mailOptions, (error, data) => {
+    // returning result
+    return transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log('%cHubo un error', 'color: #00e600', error);
-        return;
+        return res.send(error.toString());
       }
-      console.log('%c⧭', 'color: #00a3cc', 'Sent!');
-
-      console.log('%cData', 'color: #d90000', data);
+      return res.send(info);
     });
   });
+});
