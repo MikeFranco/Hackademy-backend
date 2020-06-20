@@ -2,33 +2,32 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
+const { firebaseConfig } = require('firebase-functions');
 const cors = require('cors')({
   origin: true
 });
 
 admin.initializeApp();
-let transporter;
 
-nodemailer.createTestAccount((err, account) => {
-  // create reusable transporter object using the default SMTP transport
-  transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: account.user, // generated ethereal user
-      pass: account.pass // generated ethereal password
-    }
-  });
-
-  console.log('%c⧭', 'color: #1d5673', account.user);
-  console.log('%c⧭', 'color: #f200e2', account.pass);
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: functions.config().mailer.email, // generated ethereal user
+    pass: functions.config().mailer.password // generated ethereal password
+  }
 });
 
 exports.emailMessage = functions.https.onRequest((req, res) => {
+  const { email } = req.body;
   cors(req, res, () => {
+    transporter.verify((error, success) => {
+      error
+        ? console.log('%cError verify', 'color: #807160', error)
+        : console.log('verify passed', success);
+    });
     // getting dest email by query string
-    const { name, email } = req.body;
 
     const mailOptions = {
       from: 'hola@hackademy.com', // Something like: Jane Doe <janedoe@gmail.com>
