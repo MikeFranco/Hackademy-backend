@@ -19,7 +19,17 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.emailMessage = functions.https.onRequest((req, res) => {
-  const { email } = req.body;
+  const {
+    name,
+    email,
+    cellphone,
+    state,
+    education,
+    userName,
+    language,
+    afterClub,
+    channel
+  } = req.body;
 
   cors(req, res, () => {
     transporter.verify((error, success) => {
@@ -27,12 +37,23 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
       else {
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: email,
-          subject: "I'M A PICKLE!!!",
-          html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
-                    <br />
-                    <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
-                `
+          to: 'mfranco_98@yahoo.com',
+          subject: "Nuevo Registro para el club de programación",
+          html: `
+            <p style="font-size: 16px;">Hola, aquí está la info:</p>
+            <br />
+            <ul>
+              <li>Nombre: ${name}</li>
+              <li>Email: ${email}</li>
+              <li>Celular: ${cellphone}</li>
+              <li>Ciudad y estado: ${state}</li>
+              <li>Donde estudia y semestre: ${education}</li>
+              <li>Usuario de gitHub: ${userName}</li>
+              <li>Lenguaje a aplicar: ${language}</li>
+              <li>¿Aplicará después del club?: ${afterClub}</li>
+              <li>¿Cómo se enteró?: ${channel}</li>
+            </ul>
+          `
         };
 
         return transporter.sendMail(mailOptions, (error, info) => {
