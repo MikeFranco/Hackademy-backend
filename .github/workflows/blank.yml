@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - run: |
+          cd functions
+          npm install
+          cd ..
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
