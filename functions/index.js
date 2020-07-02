@@ -37,8 +37,8 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
       else {
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: 'mfranco_98@yahoo.com',
-          subject: "Nuevo Registro para el club de programación",
+          to: 'rodrigo.medina.neri@gmail.com',
+          subject: 'Nuevo Registro para el club de programación',
           html: `
             <p style="font-size: 16px;">Hola, aquí está la info:</p>
             <br />
@@ -53,6 +53,36 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
               <li>¿Aplicará después del club?: ${afterClub}</li>
               <li>¿Cómo se enteró?: ${channel}</li>
             </ul>
+          `
+        };
+
+        return transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.send(error.toString());
+          }
+          return res.send(info);
+        });
+      }
+    });
+  });
+});
+
+exports.newsletter = functions.https.onRequest((req, res) => {
+  const { email } = req.body;
+
+  cors(req, res, () => {
+    transporter.verify((error, success) => {
+      if (error) res.send(`Verify Error: ${error.toString()}`);
+      else {
+        const mailOptions = {
+          from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
+          to: 'rodrigo.medina.neri@gmail.com',
+          subject: 'Nuevo Registro para el newsletter',
+          html: `
+            <p style="font-size: 16px;">Hola, este es el correo:</p>
+            <br />
+            <p style="font-size: 12px;">Email: ${email}</p>
+            
           `
         };
 
