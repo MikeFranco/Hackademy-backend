@@ -68,6 +68,7 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
 });
 
 exports.newsletter = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
   const { email } = req.body;
 
   cors(req, res, () => {
@@ -76,13 +77,12 @@ exports.newsletter = functions.https.onRequest((req, res) => {
       else {
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: 'rodrigo.medina.neri@gmail.com',
+          to: 'mfranco_98@yahoo.com',
           subject: 'Nuevo Registro para el newsletter',
           html: `
-            <p style="font-size: 16px;">Hola, este es el correo:</p>
+            <p style="font-size: 20px;">Hola, este es el correo:</p>
             <br />
-            <p style="font-size: 12px;">Email: ${email}</p>
-            
+            <p style="font-size: 16px;">Email: ${email}</p>
           `
         };
 
