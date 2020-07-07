@@ -9,7 +9,8 @@ const cors = require('cors')({
 admin.initializeApp();
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.dreamhost.com',
+  service: 'DREAMHOST-SUB-0',
+  /* host: 'smtp.dreamhost.com', */
   port: 465,
   secure: true,
   auth: {
@@ -37,7 +38,11 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
     transporter.verify((error, success) => {
       if (error) res.send(`Verify Error: ${error.toString()}`);
       else {
-        console.log('%c⧭', 'color: #006dcc', 'se pasa el transporter verify emailSend');
+        console.log(
+          '%c⧭',
+          'color: #006dcc',
+          'se pasa el transporter verify emailSend'
+        );
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
           to: ['rodrigo.medina.neri@gmail.com', 'mfranco_98@yahoo.com'],
@@ -78,7 +83,11 @@ exports.newsletter = functions.https.onRequest((req, res) => {
     transporter.verify((error, success) => {
       if (error) res.send(`Verify Error: ${error.toString()}`);
       else {
-        console.log('%c⧭', 'color: #006dcc', 'se pasa el transporter verify newsletter');
+        console.log(
+          '%c⧭',
+          'color: #006dcc',
+          'se pasa el transporter verify newsletter'
+        );
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
           to: ['mfranco_98@yahoo.com', 'rodrigo.medina.neri@gmail.com'],
