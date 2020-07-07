@@ -11,7 +11,7 @@ admin.initializeApp();
 const transporter = nodemailer.createTransport({
   host: 'smtp.dreamhost.com',
   port: 465,
-  secure: true,
+  secure: false,
   auth: {
     user: functions.config().hackademy.email,
     pass: functions.config().hackademy.password
