@@ -9,12 +9,12 @@ const cors = require('cors')({
 admin.initializeApp();
 
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  host: 'smtp.dreamhost.com',
   port: 465,
   secure: true,
   auth: {
-    user: functions.config().mailer.email,
-    pass: functions.config().mailer.password
+    user: functions.config().hackademy.email,
+    pass: functions.config().hackademy.password
   }
 });
 
@@ -40,7 +40,7 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
         console.log('%c⧭', 'color: #006dcc', 'se pasa el transporter verify emailSend');
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: 'rodrigo.medina.neri@gmail.com',
+          to: ['rodrigo.medina.neri@gmail.com', 'mfranco_98@yahoo.com'],
           subject: 'Nuevo Registro para el club de programación',
           html: `
             <p style="font-size: 16px;">Hola, aquí está la info:</p>
@@ -81,7 +81,7 @@ exports.newsletter = functions.https.onRequest((req, res) => {
         console.log('%c⧭', 'color: #006dcc', 'se pasa el transporter verify newsletter');
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: 'mfranco_98@yahoo.com',
+          to: ['mfranco_98@yahoo.com', 'rodrigo.medina.neri@gmail.com'],
           subject: 'Nuevo Registro para el newsletter',
           html: ` 
             <p style="font-size: 20px;">Hola, este es el correo:</p>
