@@ -75,7 +75,7 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.newsletter = functions.https.onRequest((req, res) => {
+exports.newsletterFunction = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   const { email } = req.body;
 
