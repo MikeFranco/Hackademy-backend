@@ -108,3 +108,37 @@ exports.newsletterFunction = functions.https.onRequest((req, res) => {
     });
   });
 });
+
+exports.enterpriseContact = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  const { name, email, message } = req.body;
+
+  cors(req, res, () => {
+    transporter.verify((error, success) => {
+      if (error) res.send(`Verify Error: ${error.toString()}`);
+      else {
+        const mailOptions = {
+          from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
+          to: 'mfranco_98@yahoo.com',
+          subject: 'Nuevo contacto para empresa',
+          html: `
+          <p style="font-size: 16px;">Hola, aquí está la info:</p>
+          <br />
+          <ul>
+            <li>Nombre: ${name}</li>
+            <li>Email: ${email}</li>
+            <li>Mensaje: ${message}</li>
+          </ul>
+        `
+        };
+
+        return transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.send(error.toString());
+          }
+          return res.send(info);
+        });
+      }
+    });
+  });
+});
