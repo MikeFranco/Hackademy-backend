@@ -9,7 +9,7 @@ const cors = require('cors')({
 admin.initializeApp();
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.dreamhost.com',
+  service: 'Gmail',
   port: 465,
   secure: true,
   auth: {
