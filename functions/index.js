@@ -44,7 +44,7 @@ exports.emailMessage = functions.https.onRequest((req, res) => {
         );
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: ['rodrigo.medina.neri@gmail.com', 'mfranco_98@yahoo.com'],
+          to: 'rodrigo.medina.neri@gmail.com',
           subject: 'Nuevo Registro para el club de programación',
           html: `
             <p style="font-size: 16px;">Hola, aquí está la info:</p>
@@ -89,7 +89,7 @@ exports.newsletterFunction = functions.https.onRequest((req, res) => {
         );
         const mailOptions = {
           from: 'hola@hackademy.com', //useless cause' use transporter.auth.user
-          to: ['mfranco_98@yahoo.com', 'rodrigo.medina.neri@gmail.com'],
+          to: 'mfranco_98@yahoo.com',
           subject: 'Nuevo Registro para el newsletter',
           html: ` 
             <p style="font-size: 20px;">Hola, este es el correo:</p>
