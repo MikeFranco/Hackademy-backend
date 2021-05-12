@@ -7,6 +7,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "firebase-tools": "^8.4.3",
-    "nodemailer": "^6.4.10"
+    "nodemailer": "^6.4.16"
   }
 }
