@@ -5,7 +5,7 @@
   "author": "MikeFranco <mfranco_98@yahoo.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-tools": "^8.4.3",
     "nodemailer": "^6.4.10"
   }
